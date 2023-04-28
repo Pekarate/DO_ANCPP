@@ -1,0 +1,21 @@
+cmath:338:3:constexpr float std::log(float)	1
+cmath:463:3:constexpr float std::sqrt(float)	1
+MAX30100.cpp:32:1:MAX30100::MAX30100(Mode, SamplingRate, LEDPulseWidth, LEDCurrent, bool, bool)	1
+MAX30100.cpp:90:17:pulseoxymeter_t MAX30100::update()	5
+MAX30100.cpp:157:6:bool MAX30100::detectPulse(float)	16
+MAX30100.cpp:273:6:void MAX30100::balanceIntesities(float, float)	7
+MAX30100.cpp:296:6:void MAX30100::writeRegister(uint8_t, uint8_t)	1
+MAX30100.cpp:301:9:uint8_t MAX30100::readRegister(uint8_t)	1
+MAX30100.cpp:313:6:void MAX30100::readFrom(uint8_t, int, uint8_t*)	1
+MAX30100.cpp:318:6:void MAX30100::setMode(Mode)	1
+MAX30100.cpp:324:6:void MAX30100::setHighresModeEnabled(bool)	2
+MAX30100.cpp:334:6:void MAX30100::setSamplingRate(SamplingRate)	1
+MAX30100.cpp:340:6:void MAX30100::setLEDPulseWidth(LEDPulseWidth)	1
+MAX30100.cpp:346:6:void MAX30100::setLEDCurrents(uint8_t, uint8_t)	1
+MAX30100.cpp:351:7:float MAX30100::readTemperature()	1
+MAX30100.cpp:364:6:void MAX30100::resetFIFO()	1
+MAX30100.cpp:370:8:fifo_t MAX30100::readFIFO()	1
+MAX30100.cpp:382:12:dcFilter_t MAX30100::dcRemoval(float, float, float)	1
+MAX30100.cpp:391:6:void MAX30100::lowPassButterworthFilter(float, butterworthFilter_t*)	1
+MAX30100.cpp:404:7:float MAX30100::meanDiff(float, meanDiffFilter_t*)	2
+MAX30100.cpp:422:6:void MAX30100::printRegisters()	1
