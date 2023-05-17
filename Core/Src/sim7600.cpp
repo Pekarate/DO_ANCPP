@@ -219,7 +219,7 @@ int AT_SIM7600_HTTP_Get(char * request_url,char *rsp,uint16_t *sizess)
 	}
 	At_Command(request_url,(char *)"OK\r\n",10000);
 	At_Command((char *)"AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\"\r\n",(char *)"OK\r\n",10000);
-	sprintf(buf,"AT+HTTPPARA=\"URL\",\"http://iot-rb.systems/receive_data.php?\"\r\n");
+	sprintf(buf,"AT+HTTPPARA=\"URL\",\"http://deviot.me/data/form\"\r\n");
 	At_Command(buf,(char *)"OK\r\n",10000);
 	memset(buf,0,1024);
 	At_Command_response((char *)"AT+HTTPACTION=1\r\n",(char *)"+HTTPACTION",buf,&buflen,10000);
@@ -230,6 +230,36 @@ int AT_SIM7600_HTTP_Get(char * request_url,char *rsp,uint16_t *sizess)
 }
 //+CGPSINFO: 16°04'58.6327"N 108°08'98.5204"E,170423,130954.0,34.9,0.0,0.0
 //           16°04'35.0"N 108°08'59.8"E
+int extractFloatValues(const char* sentence, float* value1, float* value2)
+{
+    const char* start = strchr(sentence, ':');  // Find the first occurrence of ':'
+    if (start == NULL) {
+        // fprintf(stderr, "Error: Invalid sentence format\n");
+        return -1;
+    }
+    start++;  // Move past the ':' character
+
+    char* end;
+    *value1 = strtof(start, &end);  // Convert the first substring to float
+    if (start == end) {
+        // fprintf(stderr, "Error: Failed to extract float value 1\n");
+        return -1;
+    }
+
+    start = strchr(end + 1, ',');  // Find the next occurrence of ','
+    if (start == NULL) {
+//        fprintf(stderr, "Error: Failed to extract float value 2\n");
+        return -1;
+    }
+    start++;  // Move past the ',' character
+
+    *value2 = strtof(start, &end);  // Convert the second substring to float
+    if (start == end) {
+//        fprintf(stderr, "Error: Failed to extract float value 2\n");
+        return -1;
+    }
+    return 1;
+}
 int  SIM_7600_read_GNSS(char *Location)
 {
 	char rsp[200]={0};
@@ -238,15 +268,11 @@ int  SIM_7600_read_GNSS(char *Location)
 		char *start = strstr(rsp,": ");
 		if(start)
 		{
-			start+=2;
-			char *end = strstr(start,",E,");
-			if(end)
+			float plat,plong=0.0f;
+			if(extractFloatValues(rsp,&plat,&plong) == 1)
 			{
-				if(end - start> 10)
-				{
-					memcpy(Location,start,end - start+2);
-					return 1;
-				}
+				sprintf(Location,"%f, %f",plat,plong);
+				return 1;
 			}
 		}
 	 }
