@@ -8,6 +8,11 @@
 #include "MAX30100.hpp"
 #include "string.h"
 #include "sim7600.hpp"
+#include "main.h"
+
+#define BUZZER_OFF 	HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, GPIO_PIN_SET)
+#define BUZZER_ON 	HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, GPIO_PIN_RESET)
+#define BUZZER_TIME 3000
 MAX30100* pulseOxymeter;
 extern TIM_HandleTypeDef htim2;
 extern ADC_HandleTypeDef hadc1;
@@ -34,6 +39,7 @@ uint8_t sleep_enable = 0;
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+
 //	printf("GPIO %d LOW\r\n",GPIO_Pin);
 	printf("weakup by GPIO\r\n");
 	HAL_PWR_DisableSleepOnExit ();
@@ -128,6 +134,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 }
 void init()
 {
+	BUZZER_OFF;
 	HAL_Delay(100);
 	printf("helloworld\r\n");
 	HAL_NVIC_DisableIRQ(EXTI0_IRQn);
@@ -263,6 +270,9 @@ void loop()
 				int res= AT_SIM7600_HTTP_Get(request,NULL,NULL);
 				printf("HTTP STATUS CODE: %d\r\n",res);
 				if((res== 200) || (http_try ==1)){
+					BUZZER_ON;
+					HAL_Delay(BUZZER_TIME);
+					BUZZER_OFF;
 					if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
 					{
 						simstate = SIM_SEND_SMS;

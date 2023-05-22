@@ -61,6 +61,8 @@ void Error_Handler(void);
 #define LDN_GPIO_Port GPIOA
 #define LDP_Pin GPIO_PIN_5
 #define LDP_GPIO_Port GPIOA
+#define BUZZER_Pin GPIO_PIN_6
+#define BUZZER_GPIO_Port GPIOA
 #define SIM_DTR_Pin GPIO_PIN_15
 #define SIM_DTR_GPIO_Port GPIOB
 #define SIM_PWR_Pin GPIO_PIN_8
